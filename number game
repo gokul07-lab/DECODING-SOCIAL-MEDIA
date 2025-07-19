@@ -1,0 +1,74 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class NumberGuessingGame {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        int roundsPlayed = 0;
+        int roundsWon = 0;
+        final int MAX_ATTEMPTS = 7;
+        final int MIN = 1;
+        final int MAX = 100;
+
+        System.out.println(" Welcome to the Number Guessing Game!");
+
+        boolean playAgain = true;
+
+        while (playAgain) {
+            int targetNumber = random.nextInt(MAX - MIN + 1) + MIN;
+            int attempts = 0;
+            boolean guessedCorrectly = false;
+
+            System.out.println("\n I have selected a number between " + MIN + " and " + MAX + ".");
+            System.out.println("You have " + MAX_ATTEMPTS + " attempts to guess it!");
+
+            while (attempts < MAX_ATTEMPTS) {
+                System.out.print("Enter your guess: ");
+                int guess;
+
+                // Input validation
+                if (!scanner.hasNextInt()) {
+                    System.out.println("nvalid input. Please enter a number.");
+                    scanner.next(); // clear invalid input
+                    continue;
+                }
+
+                guess = scanner.nextInt();
+                attempts++;
+
+                if (guess == targetNumber) {
+                    System.out.println(" Correct! You've guessed the number in " + attempts + " attempts.");
+                    guessedCorrectly = true;
+                    roundsWon++;
+                    break;
+                } else if (guess < targetNumber) {
+                    System.out.println(" Too low!");
+                } else {
+                    System.out.println(" Too high!");
+                }
+
+                System.out.println("Attempts left: " + (MAX_ATTEMPTS - attempts));
+            }
+
+            if (!guessedCorrectly) {
+                System.out.println(" You've used all attempts! The number was: " + targetNumber);
+            }
+
+            roundsPlayed++;
+
+            System.out.print("\n Do you want to play another round? (yes/no): ");
+            String response = scanner.next();
+
+            playAgain = response.equalsIgnoreCase("yes");
+        }
+
+        System.out.println("\n Game Over!");
+        System.out.println(" Rounds Played: " + roundsPlayed);
+        System.out.println(" Rounds Won: " + roundsWon);
+
+        scanner.close();
+    }
+}
